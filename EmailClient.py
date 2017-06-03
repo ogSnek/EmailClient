@@ -9,6 +9,7 @@ from backports import ssl
 import time
 import pyzmail
 import os
+# Must install imapclient and easy_install pyzmail
 
 print('Python Email Client')
 print('\nWARNING: ALL DATA IS UNENCRYPTED')
@@ -18,7 +19,9 @@ try:
     address = user['email'][0]
     smtp = user['email'][1]
     password = user['email'][2]
-    
+# Try to read from a saved data file
+# If nothing is found run except
+
 except:
     print('\nLOGIN:\n')
     print('Email Address:')
@@ -35,6 +38,7 @@ except:
     email = [address, smtp, password]
     user['email'] = email
     print('User information stored in \'mydata.dat\'')
+# Ask for information and save to data file to be retrieved later
 
 def logout():
     with open('mydata.dat', 'w'):
@@ -47,35 +51,40 @@ def logout():
     print('\nUser information deleted')
     time.sleep(1)
     exit()
+# Erase data file and relatives and end program
     
 def readAll():
     try:
         context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
         server = imapclient.IMAPClient(smtp, ssl = True, ssl_context = context)
         server.login(address, password)
-        server.select_folder('INBOX', readonly = True)
+        server.select_folder('INBOX', readonly = True)  # Read from Inbox
         UID = server.search(['SEEN'])
-        print('\nYou have ' + str(len(UID)) + ' emails being queried\n')
-        print('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
-        x = (len(UID) - 10)
+        x = (len(UID) - 10) # Only print 10 emails at a time
         i = len(UID)
-        while (i > x):
+        if (i > 0): # Print number of emails found
+            print('\nYou have ' + str(len(UID)) + ' emails being queried\n')
+            print('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
+        if (i == 0):
+            print('\nYou have no new mail\n')
+            print('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
+        while ( (i > x) and (i > 0) ):
             i -= 1
-            var = UID[i]
+            var = UID[i]  # If an email is found, parse through it
             rawMessage = server.fetch(UID[i], ['BODY[]', 'FLAGS'])
             message = pyzmail.PyzMessage.factory(rawMessage[var][b'BODY[]'])
             subject = message.get_subject()
             sender = message.get_address('from')
             receiver = message.get_address('to')
             if (message.text_part == None):
-                print('\n\nError locating UID [' + str(i) + ']\n\n')
+                print('\n\nError loading UID [' + str(i) + ']\n\nText type not supported\n\n')
                 print('\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
                 continue
             if (message.text_part.charset == None):
-                print('\n\nError locating UID [' + str(i) + ']\n\n')
+                print('\n\nError loading UID [' + str(i) + ']\n\nText type not supported\n\n')
                 print('\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
                 continue
-            print('\n\n[' + str(i) + ']')
+            print('\n\n[' + str(i) + ']') # Print the parsed email's body
             print('SUBJECT: ' + str(subject))
             print('SENT BY: ' + str(sender))
             os.environ["LANG"]="en_US.UTF-8"
@@ -85,7 +94,7 @@ def readAll():
             print('\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
             if (i == x):
                 print('Enter "+" to read more emails')
-                print('Enter "exit" to exit')
+                print('Enter "exit" to exit') # Prompt user to load more emails
                 prompt = input()
                 if prompt == '+':
                     x -= 10
@@ -102,28 +111,32 @@ def read():
         server = imapclient.IMAPClient(smtp, ssl = True, ssl_context = context)
         server.login(address, password)
         server.select_folder('INBOX', readonly = False)
-        UID = server.search(['UNSEEN'])
-        print('\nYou have ' + str(len(UID)) + ' emails being queried\n')
-        print('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
-        x = (len(UID) - 10)
+        UID = server.search(['UNSEEN']) # Read only unseen emails
+        x = (len(UID) - 10) # Only print 10 emails at a time
         i = len(UID)
-        while (i > x):
+        if (i > 0): # Print number of emails found
+            print('\nYou have ' + str(len(UID)) + ' emails being queried\n')
+            print('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
+        if (i == 0):
+            print('\nYou have no new mail\n')
+            print('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
+        while ( (i > x) and (i > 0) ):
             i -= 1
-            var = UID[i]
+            var = UID[i] # If an email is found parse through it
             rawMessage = server.fetch(UID[i], ['BODY[]', 'FLAGS'])
             message = pyzmail.PyzMessage.factory(rawMessage[var][b'BODY[]'])
             subject = message.get_subject()
             sender = message.get_address('from')
             receiver = message.get_address('to')
             if (message.text_part == None):
-                print('\n\nError locating UID [' + str(i) + ']\n\n')
+                print('\n\nError loading UID [' + str(i) + ']\n\nText type not supported\n\n')
                 print('\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
                 continue
             if (message.text_part.charset == None):
-                print('\n\nError locating UID [' + str(i) + ']\n\n')
+                print('\n\nError loading UID [' + str(i) + ']\n\nText type not supported\n\n')
                 print('\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
                 continue
-            print('\n\n[' + str(i) + ']')
+            print('\n\n[' + str(i) + ']') # Print parsed email's body
             print('SUBJECT: ' + str(subject))
             print('SENT BY: ' + str(sender))
             message.text_part != None
@@ -131,7 +144,7 @@ def read():
             print('\nMESSAGE: \n'+ str(message.text_part.get_payload().decode(message.text_part.charset)))
             print('\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
             if (i == x):
-                print('Enter "+" to read more emails')
+                print('Enter "+" to read more emails') # Prompt user t0 load more emails
                 print('Enter "exit" to exit')
                 prompt = input()
                 if prompt == '+':
@@ -152,27 +165,31 @@ def search():
         server.login(address, password)
         server.select_folder('INBOX', readonly = True)
         UID = server.gmail_search(str(phrase))
-        print('\nYou have ' + str(len(UID)) + ' emails being queried\n')
-        print('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
-        x = (len(UID) - 10)
+        x = (len(UID) - 10) # Only print 10 emails at a time
         i = len(UID)
-        while (i > x):
+        if (i > 0): # Print number of emails found
+            print('\nYou have ' + str(len(UID)) + ' emails being queried\n')
+            print('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
+        if (i == 0):
+            print('\nYou have no new mail\n')
+            print('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
+        while ( (i > x) and (i > 0) ):
             i -= 1
-            var = UID[i]
+            var = UID[i] # If an email is found parse through it
             rawMessage = server.fetch(UID[i], ['BODY[]', 'FLAGS'])
             message = pyzmail.PyzMessage.factory(rawMessage[var][b'BODY[]'])
             subject = message.get_subject()
             sender = message.get_address('from')
             receiver = message.get_address('to')
             if (message.text_part == None):
-                print('\n\nError locating UID [' + str(i) + ']\n\n')
+                print('\n\nError locating UID [' + str(i) + ']\n\nText type not supported\n\n')
                 print('\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
                 continue
             if (message.text_part.charset == None):
-                print('\n\nError locating UID [' + str(i) + ']\n\n')
+                print('\n\nError locating UID [' + str(i) + ']\n\nText type not supported\n\n')
                 print('\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
                 continue
-            print('\n\n[' + str(i) + ']')
+            print('\n\n[' + str(i) + ']')# Print parsed email's body
             print('SUBJECT: ' + str(subject))
             print('SENT BY: ' + str(sender))
             message.text_part != None
@@ -180,7 +197,7 @@ def search():
             print('\nMESSAGE: \n'+ str(message.text_part.get_payload().decode(message.text_part.charset)))
             print('\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
             if (i == x):
-                print('Enter "+" to read more emails')
+                print('Enter "+" to read more emails') # Prompt user to load more emails
                 print('Enter "exit" to exit')
                 prompt = input()
                 if prompt == '+':
@@ -193,14 +210,14 @@ def search():
         print('\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------')
         
 def send():
-    try:
+    try: # Enter required info
         print('Enter recipient:')
         recipient = input()
         print('Enter subject:')
         subject = 'Subject: ' + input() + '\r\n'
         print('Enter body:')
         body = subject + input()
-        server = smtplib.SMTP(smtp, 587)
+        server = smtplib.SMTP(smtp, 587) # Connect to server and send email
         server.ehlo()
         server.starttls()
         server.login(address, password)
@@ -211,22 +228,22 @@ def send():
     except Exception as e:
         print('\nAn error ocurred: ' + str(e) )
 
-while True:
+while True: # Prompt user for action
     print('\nWould you like to send or read an email?')
-    print('Enter send() to send')
-    print('Enter read() to view only unread emails')
-    print('Enter readAll() to view a range of read emails')
-    print('Enter logout() to delete your saved data and exit this module')
+    print('Enter \'send\' to send')
+    print('Enter \'read\' to view only unread emails')
+    print('Enter \'readAll\' to view a range of read emails')
+    print('Enter \'logout\' to delete your saved data and exit this module')
     if smtp == 'smtp.gmail.com':
-        print('Enter search() to query an email by string\n')
+        print('Enter \'search\' to query an email by string\n')
     prompt = input()
-    if prompt == 'send()':
+    if prompt == 'send':
         send()
-    elif prompt == 'read()':
+    elif prompt == 'read':
         read()
-    elif prompt == 'readAll()':
+    elif prompt == 'readAll':
         readAll()
-    elif prompt == 'logout()':
+    elif prompt == 'logout':
         logout()
-    elif prompt == 'search()':
+    elif prompt == 'search':
         search()

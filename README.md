@@ -5,6 +5,8 @@ EmailClient.py is a Python project that connects to a user's SMTP account and al
 
 This project requires Python 3+ to operate
 
+Must install imapclient and easy_install pyzmail through pip
+
 CONCEPT:
 
 Program first indexes 'mydata.dat' for possible saved SMTP account information

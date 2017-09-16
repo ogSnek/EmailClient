@@ -14,13 +14,14 @@ easy_install pyzmail
 
 # Concept
 
-EmailClient.py is a Python project that connects to a user's SMTP account and allows to send, receive, and index emails.
+EmailClient.py is a Python project that connects to a user's SMTP account and allows to send, receive, and index emails. </br>
+<br/>
+Program first indexes 'mydata.dat' for possible saved SMTP account information.<br/>
+<br/>
+If no data is found then the user is prompted to enter an SMTP email and password that will then be saved into maydata.dat to be referenced for later sessions.<br/>
+<br/>
 
-Program first indexes 'mydata.dat' for possible saved SMTP account information.
-
-If no data is found then the user is prompted to enter an SMTP email and password that will then be saved into maydata.dat to be referenced for later sessions.
-
-<b>Functions to call: </b>
+<b>Functions to call: </b><br/>
 
 logout = Wipes mydata.dat information and close session
 readAll = Indexes all received emails in Inbox

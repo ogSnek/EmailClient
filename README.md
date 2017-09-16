@@ -23,11 +23,11 @@ If no data is found then the user is prompted to enter an SMTP email and passwor
 
 <b>Functions to call: </b><br/>
 
-logout = Wipes mydata.dat information and close session
-readAll = Indexes all received emails in Inbox
-read = Indexes only unread emails
-search = Prompts user for a string that will be queried and will return any emails found 
-send = Sends a message to a directed receiver
+logout = Wipes mydata.dat information and close session<br/>
+readAll = Indexes all received emails in Inbox<br/>
+read = Indexes only unread emails<br/>
+search = Prompts user for a string that will be queried and will return any emails found <br/>
+send = Sends a message to a directed receiver<br/>
 
 #
 

@@ -9,7 +9,6 @@ from backports import ssl
 import time
 import pyzmail
 import os
-# Must install imapclient and easy_install pyzmail
 
 print('Python Email Client')
 print('\nWARNING: ALL DATA IS UNENCRYPTED')
@@ -247,3 +246,4 @@ while True: # Prompt user for action
         logout()
     elif prompt == 'search':
         search()
+

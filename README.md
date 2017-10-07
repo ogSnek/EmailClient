@@ -21,7 +21,8 @@ EmailClient.py is a Python project that connects to a user's SMTP account and al
 Program first indexes 'mydata.dat' for possible saved SMTP account information.<br/>
 <br/>
 If no data is found then the user is prompted to enter an SMTP email and password that will then be saved into maydata.dat to be referenced for later sessions.<br/>
-The program connects tot eh STMP server associated with the user's email, and queries information based on the input.<br/>
+<br/>
+The program connects to the STMP server associated with the user's email, and queries information based on the specific input.<br/>
 <br/>
 
 <b>Functions to call: </b><br/>

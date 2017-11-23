@@ -9,7 +9,8 @@ Required Python 3+
 ```
 pip install requirements.txt
 ```
-<br/>
+
+
 Clone repo: `$ git clone https://github.com/Isaacdelly/EmailClient`
 
 #

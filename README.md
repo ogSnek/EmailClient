@@ -10,6 +10,8 @@ Clone repo: `$ git clone https://github.com/Isaacdelly/EmailClient`
 
 <br/>
 
+Install Requirements: 
+
 ```
 pip install requirements.txt
 ```

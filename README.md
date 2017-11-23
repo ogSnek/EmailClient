@@ -2,16 +2,18 @@
 
 EmailClient connects to a user's SMTP account and allows to send, receive, and index emails fluidly and efficiently.
 
-#
+# Installation
 
 Required Python 3+
+
+Clone repo: `$ git clone https://github.com/Isaacdelly/EmailClient`
+
+<br/>
 
 ```
 pip install requirements.txt
 ```
 
-
-Clone repo: `$ git clone https://github.com/Isaacdelly/EmailClient`
 
 #
 

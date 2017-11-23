@@ -1,5 +1,6 @@
 # Python Email Client
 # Made by Isaac Delly
+# https://github.com/Isaacdelly/EmailClient
 
 import shelve
 import smtplib
@@ -11,7 +12,6 @@ import pyzmail
 import os
 
 print('Python Email Client')
-print('\nWARNING: ALL DATA IS UNENCRYPTED')
 
 try:
     user = shelve.open('mydata')

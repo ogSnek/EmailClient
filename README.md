@@ -7,10 +7,10 @@ EmailClient connects to a user's SMTP account and allows to send, receive, and i
 Required Python 3+
 
 ```
-pip install imapclient
-
-easy_install pyzmail
+pip install requirements.txt
 ```
+
+Clone repo: `$ git clone https://github.com/Isaacdelly/EmailClient`
 
 #
 
